@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import LeftNav from "../../components/left-nav"
-
+import HeaderMain from "../../components/header-main"
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -31,11 +31,10 @@ export default class Admin extends Component {
                     //右边内容
                 }
               <Layout>
-                <Header style={{ background: '#fff', padding: 0 }} />
-                <Content style={{ margin: '0 16px' }}>
-                  <Breadcrumb style={{ margin: '16px 0' }}>
-    
-                  </Breadcrumb>
+                <Header style={{ background: '#fff', padding: 0, minHeight: 100 }}>
+                    <HeaderMain/>
+                </Header>
+                <Content style={{ margin: '25px 16px' }}>
                   <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
                     欢迎使用硅谷后台管理系统
                   </div>
