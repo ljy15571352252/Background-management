@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import logo from "./logo.png"
-
 import { Form, Icon, Input, Button } from 'antd';
 import "./index.less"
+import reqLogin from    "../../api/index"
 
 const Item = Form.Item;
 
@@ -13,11 +13,20 @@ class Login extends Component {
 
         //自定义校检
         // eero  显示报错  values 输入的内容
-        this.props.form.validateFields((eero,values)=>{
-            if(!eero){
+        this.props.form.validateFields(async (eero,values)=>{
+            if(!eero){   //没有错误 说明验证成功
                 // 发送请求，请求登录
                 const {username,password} = values
                 console.log(username,password)
+
+                const  result =await reqLogin(username,password)
+                if(result){
+                    //登录成功
+                    this.props.history.replace("/")
+                }else{
+                    //登录失败
+                    this.props.form.resetFields(['password']);
+                }
             }else{
                 //校监失败
                 console.log("表单验证失败")
@@ -41,9 +50,6 @@ class Login extends Component {
         }
         callback()
     }
-
-    
-
     render(){
         //getFieldDecorator 是form上的方法
       const { getFieldDecorator } = this.props.form;
@@ -56,10 +62,10 @@ class Login extends Component {
             <h2>用户登录</h2>
             <Form onSubmit={this.handleSubmit} className="login-form">
                 <Item>
-                    {getFieldDecorator('username', {
+                    {getFieldDecorator('username', {  //这定义的字符串是什么validator的第一参数的属性值就是什么
                         rules: [
                         //     {
-                        //     required: true,
+                        //     required: true,  必须传
                         //     message: '用户名不能为空!'
                         // },
                         //     {
@@ -74,15 +80,14 @@ class Login extends Component {
                         //     pattern:/^[a-zA-Z_0-9]+$/,
                         //     message:"请正确输入数字字母下划线"
                         // }
-
-                            { validator:this.validator },  //自定义校检
+                            { validator:this.validator}  //自定义校检
 
                         ],
                     })
                     (
-                        <Input className="login-input"
+                        <Input className="login-input"  autoComplete="off"  //禁止输入存在 历史记录
                             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                            placeholder="请输入用户名"
+                            placeholder="用户名"
                         />,
                     )}
                  </Item>
@@ -95,7 +100,7 @@ class Login extends Component {
                         <Input className="login-input"
                             prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                             type="password"
-                            placeholder="请输入密码"
+                            placeholder="密码"
                         />,
                     )}
                 </Item>
@@ -105,7 +110,6 @@ class Login extends Component {
                     </Button>
                 </Item>
             </Form>
-
         </section>
     </div>;
   }

@@ -1,6 +1,7 @@
 import React from "react"
 import ReactDom from "react-dom"
 import App from "./app"
-import "./assets/index.less"
+import "./assets/less/index.less"
+import {BrowserRouter} from "react-router-dom"
 
-ReactDom.render(<App/>,document.getElementById("root"))
+ReactDom.render(<BrowserRouter><App/></BrowserRouter>,document.getElementById("root"))
