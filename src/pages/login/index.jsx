@@ -3,6 +3,7 @@ import logo from "../../assets/images/logo.png"
 import { Form, Icon, Input, Button } from 'antd';
 import "./index.less"
 import reqLogin from    "../../api/index"
+import {setinformation} from "../../utils"
 
 const Item = Form.Item;
 
@@ -22,9 +23,13 @@ class Login extends Component {
                 const  result =await reqLogin(username,password)
                 if(result){
                     //登录成功
+                   //再回调函数中 使用编程式导航 再render中使用重定向
+
+                  //登录成功 设置localstorig 设置用户信息  必须得登录才能进去主页面admin
+                    setinformation(result)
                     this.props.history.replace("/")
                 }else{
-                    //登录失败
+                    //登录失败  重置密码输入框的内容
                     this.props.form.resetFields(['password']);
                 }
             }else{
@@ -112,6 +117,6 @@ class Login extends Component {
             </Form>
         </section>
     </div>;
-  }
+  };
 }
 export default Form.create()(Login);

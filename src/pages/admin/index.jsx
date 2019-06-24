@@ -1,23 +1,34 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
-import { Link, withRouter } from 'react-router-dom';
+import { Layout } from 'antd';
 import LeftNav from "../../components/left-nav"
 import HeaderMain from "../../components/header-main"
+import {getinformation}  from  "../../utils"
+import {reqCategories} from "../../api"
+
 const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
 
 
 export default class Admin extends Component {
     state = {
         collapsed: false,
     };
-
     onCollapse = collapsed => {
         console.log(collapsed);
         this.setState({ collapsed });
     };
 
-    render() {
+    //读取用户信息
+    async componentWillMount() {
+      const user = getinformation()
+      if(user &&user._id){
+        const  result = await reqCategories(user._id)
+        if(result) return
+      }
+      this.props.history.replace("/login")
+
+    }
+
+  render() {
         const {collapsed} = this.state
         return  (
             <Layout style={{ minHeight: '100vh' }}>
@@ -27,9 +38,9 @@ export default class Admin extends Component {
                   }
                   <LeftNav collapsed={collapsed}/> 
               </Sider>
-                {
-                    //右边内容
-                }
+                  {
+                      //右边内容
+                  }
               <Layout>
                 <Header style={{ background: '#fff', padding: 0, minHeight: 100 }}>
                     <HeaderMain/>

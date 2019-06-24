@@ -2,6 +2,7 @@ import React from 'react';
 
 import './index.less';
 
-export default function MyButton() {
-  return <button className="my-button">退出</button>
+//共产函数耶尔时
+export default function MyButton(props) {
+  return <button className="my-button"  {...props}/>
 }
