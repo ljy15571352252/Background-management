@@ -3,14 +3,19 @@ import jsonp from 'jsonp'; //Andt 自己封装得jsonp 解决跨域
 import { message } from 'antd';
 
 
-
+  //返回的一定是一个promise成共状态的对象 成功就会有数据 失败就没有
 export default function  login(username,password) {
   return ajax("/login", {username, password}, "POST")
 }
 
-//验证接口
-export const  reqCategories =function(id) {
+//验证接口r
+export const  reqValidateUserInfo =function(id) {
     return ajax("/validate/user",{id},"POST")
+}
+
+//表格的接口
+export const    reqCategories= function(parentId) {
+    return ajax("/manage/category/list",{parentId})
 }
 
   //天气得接口
