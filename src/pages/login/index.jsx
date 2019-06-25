@@ -11,7 +11,6 @@ class Login extends Component {
 
     handleSubmit = (e) =>{
         e.preventDefault()
-
         //自定义校检
         // eero  显示报错  values 输入的内容
         this.props.form.validateFields(async (eero,values)=>{
@@ -39,11 +38,12 @@ class Login extends Component {
         })
     };
     // 自定义校验规则函数
-    //rule
+    //rule  //可以知道提交通过的是那个表单内容
     //value 输入框里的文字
     // callback  不传参代表校验通过，传参代表校验失败
     validator = (rule, value, callback) =>{
         const name = rule.fullField ==="username"?"用户名":"密码"
+        console.log(rule)
         if(!value){
             callback(`请输入${name}`)
         }else if(value.length<4){

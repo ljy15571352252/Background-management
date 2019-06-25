@@ -13,15 +13,14 @@ export const  reqValidateUserInfo =function(id) {
     return ajax("/validate/user",{id},"POST")
 }
 
-//表格的接口
-export const    reqCategories= function(parentId) {
-    return ajax("/manage/category/list",{parentId})
-}
+
 
   //天气得接口
+//最外面套层函数 是为了防止里面的prominse自调用
 export const  reWeather=function () {
-    return new Promise((resolve,reject)=>{
-      jsonp("http://api.map.baidu.com/telematics/v3/weather?location=深圳&output=json&ak=3p49MVra6urFRGOT9s8UBWr2", {}, function (erro,data) {
+  let cancel = null //jsonp返回一个取消ajax请求的函数
+  const promise = new Promise((resolve,reject)=>{
+        cancel= jsonp("http://api.map.baidu.com/telematics/v3/weather?location=深圳&output=json&ak=3p49MVra6urFRGOT9s8UBWr2", {}, function (erro,data) {
         //请求成功
         if(!erro){
           const {dayPictureUrl,weather} = data.results[0].weather_data[0];
@@ -35,4 +34,18 @@ export const  reWeather=function () {
         }
       })
     })
-  }
+   return{
+     promise,
+     cancel
+   }
+}
+
+//获取分类接口
+export const    reqCategories= function(parentId) {
+  return ajax("/manage/category/list",{parentId})
+}
+
+//添加分类接口
+export const    reqAddCategories= function(parentId,categoryName) {
+  return ajax("/manage/category/add",{parentId,categoryName},"POST")
+}

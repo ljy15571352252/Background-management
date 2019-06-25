@@ -2,6 +2,10 @@
 import axios from  "axios"
 import {message } from 'antd';
 
+//url       地址
+//data      参数  //没有的话默认为空对象
+//method    请求方式 如果不写 默认为get请求
+
 export default function ajax(url, data = {}, method="get") {
     let reParams = data
     method = method.toLowerCase()
@@ -24,7 +28,7 @@ export default function ajax(url, data = {}, method="get") {
                 //通过http://localhost:5000 来返回响应
                 //   虚拟DOM中render用Router重定向  再函数式编程中使用history
                 // this.props.history.replace("/")
-                return data.data;   //post里面data的用户数据信息
+                return data.data|| {};   //post里面data的用户数据信息
 
             }else{
                 //登录失败   2 是提示存在的时间

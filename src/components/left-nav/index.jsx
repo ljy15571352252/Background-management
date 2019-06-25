@@ -11,6 +11,9 @@ import menuList from "../../config/menuList"
 const { SubMenu,Item } = Menu;
 class LeftNav extends Component {
 
+
+
+
   //创建公共的方法 因为一级菜单和二级子菜单结构一样
   creatMenu = (menu)=>{
     return <Item key={menu.key}>
@@ -22,11 +25,14 @@ class LeftNav extends Component {
   }
     //初始画的时候就要渲染 而且只生成一次 动态生成左边菜单 更新的时候不渲染
   componentWillMount(){
+    //只要没选中其他的组件的时候 默认选中home
+    let ishome = true;
+
     // 获取location 上的pathname 属性的值就是路由路径
     // 可以获取loction上内容 来进行判断是否跟二级菜单同名 此时就展开二级菜单的父元素一级菜单
      const {pathname} =  this.props.location
 
-    this.menus = menuList.map((menu)=>{  //使用map是因为内容改变 长度不变
+     this.menus = menuList.map((menu)=>{  //使用map是因为内容改变 长度不变
             if(menu.children){
                 //二级菜单
                 return <SubMenu
@@ -43,17 +49,19 @@ class LeftNav extends Component {
                         if(pathname === item.key){ //当和二级菜单的值一样的时候 就展开他的父元素
                           //初始化展开菜单
                           this.openKey = menu.key
+                          ishome = false     //不能选中其他组件
                         }
                          return this.creatMenu(item)
                       })
                     }
                 </SubMenu>
             }else {
+              if(menu.key === pathname) ishome = false //不能选中其他组件
                 return this.creatMenu(menu)
             }
         })
     //初始化选中菜单
-    this.SelectedKeys = pathname
+    this.SelectedKeys = ishome ? "/home":pathname;
   }
   render() {
       const {collapsed} = this.props

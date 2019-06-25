@@ -43,14 +43,16 @@ import menuList from "../../config/menuList"
 
    //跟新时间
    async componentDidMount() {
-       setInterval(() =>{
+      this.time = setInterval(() =>{
           this.setState({
             time:Date.now()
           })
        },1000)
-
+     const {promise,cancel} = reWeather()
+     console.log(cancel)
+     this.cancel = cancel  //因为在取消定时器的时候这个请求还没接收到 render中就使用了 所以就会报错
      //请求成功才会获取信息 不然限制性就获取不到信息
-    const  result =await reWeather()
+    const  result =await promise
      if(result){
        this.setState(result)
      }
@@ -58,7 +60,7 @@ import menuList from "../../config/menuList"
 
     //动态生成title
     getTitle = (nextProps) =>{
-      const {pathname} = nextProps.location
+      const {pathname} = nextProps.location //获取最新的值
       for (let i = 0; i < menuList.length; i++) {
         const menu  = menuList[i]
         if(menu.children){
@@ -74,8 +76,13 @@ import menuList from "../../config/menuList"
           }
         }
       }
-
     }
+
+    //解决内存泄漏 清除定时器和取消天气的ajax请求
+   componentWillUnmount() {
+      clearInterval(this.time )
+      this.cancel()
+   }
 
    render() {
    const {time,weather,PictureUrl} = this.state
