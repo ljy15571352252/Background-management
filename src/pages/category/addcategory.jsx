@@ -22,7 +22,6 @@ const { Item } = Form
        callback()
      }
    }
-
    render() {
      const { getFieldDecorator } = this.props.form;
      return    (

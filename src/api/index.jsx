@@ -49,3 +49,11 @@ export const    reqCategories= function(parentId) {
 export const    reqAddCategories= function(parentId,categoryName) {
   return ajax("/manage/category/add",{parentId,categoryName},"POST")
 }
+
+//修改名称的接口
+export const    reqUpdateCategoryName= function(categoryId,categoryName) {
+  return ajax("/manage/category/update",{categoryId,categoryName},"POST")
+}
+
+
+
