@@ -55,5 +55,13 @@ export const    reqUpdateCategoryName= function(categoryId,categoryName) {
   return ajax("/manage/category/update",{categoryId,categoryName},"POST")
 }
 
+//请求商品的接口
+export const  reqProducts= function(pageNum,pageSize) {
+  return ajax("/manage/product/list",{pageNum,pageSize})
+}
 
+//添加商品
+export const  addProducts= function({name, desc, price, categoryId, pCategoryId, detail}) {
+  return ajax("/manage/product/add",{name, desc, price, categoryId, pCategoryId, detail},"POST")
+}
 

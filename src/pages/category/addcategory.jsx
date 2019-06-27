@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Select,Input,message } from 'antd';
+import { Form, Select,Input } from 'antd';
 import PropTypes from "prop-types"
 const { Option } = Select;
 const { Item } = Form

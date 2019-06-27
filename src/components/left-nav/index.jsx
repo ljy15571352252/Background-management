@@ -30,7 +30,14 @@ class LeftNav extends Component {
 
     // 获取location 上的pathname 属性的值就是路由路径
     // 可以获取loction上内容 来进行判断是否跟二级菜单同名 此时就展开二级菜单的父元素一级菜单
-     const {pathname} =  this.props.location
+     let {pathname} =  this.props.location
+    
+    //在其它的二级组件中也要显示
+     const pathnameReg = /^\/product\// 
+    if(pathnameReg.test(pathname)){
+      pathname = pathname.slice(0,8)
+    }
+
 
      this.menus = menuList.map((menu)=>{  //使用map是因为内容改变 长度不变
             if(menu.children){

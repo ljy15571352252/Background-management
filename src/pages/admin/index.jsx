@@ -56,7 +56,6 @@ export default class Admin extends Component {
 /*      //没有用户信息的时候 不能进入admin页面
       this.props.history.replace("/login")*/
     }
-
   render() {
         const {collapsed,isLogin,success} = this.state
         if(isLogin) return null
@@ -90,6 +89,5 @@ export default class Admin extends Component {
                   </Footer>
                 </Layout>
               </Layout>:<Redirect to="/login" />
-
   }
 }

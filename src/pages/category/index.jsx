@@ -50,6 +50,7 @@ export default class Category extends Component {
       }
    }
 
+   //刚开始默认加载一级组件
    componentDidMount() {
      this.fetchCategories(0)
    }

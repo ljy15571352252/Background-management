@@ -60,7 +60,14 @@ import menuList from "../../config/menuList"
 
     //动态生成title
     getTitle = (nextProps) =>{
-      const {pathname} = nextProps.location //获取最新的值
+      let {pathname} = nextProps.location //获取最新的值
+
+      //product组件也需要获取值
+      const pathnameReg = /^\/product\//
+      if(pathnameReg.test(pathname)){
+        pathname = pathname.slice(0,8)
+      }
+
       for (let i = 0; i < menuList.length; i++) {
         const menu  = menuList[i]
         if(menu.children){

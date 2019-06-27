@@ -40,5 +40,4 @@ export default function ajax(url, data = {}, method="get") {
             //网咯错误
             message.error("网咯出现异常",2)
         })
-
 }

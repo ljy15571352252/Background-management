@@ -8,10 +8,10 @@ import Index  from "./index/index"
 export default class Product extends Component {
   render() {
     return <Switch>
-      <Route path="/product/save-update" component={SeveUpdate}/>
+      <Route path="/product/saveupdate" component={SeveUpdate}/>
       <Route path="/product/detail" component={Detail}/>
       <Route path="/product/index" component={Index}/>
-      <Redirect to="/product/index"/>
+      <Redirect to="product/index"/>
     </Switch>;
   }
 }
