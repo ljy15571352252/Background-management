@@ -6,6 +6,7 @@ import { Link, withRouter } from 'react-router-dom';
 import logo from "../../assets/images/logo.png";
 import "./index.less";
 import menuList from "../../config/menuList"
+import { getinformation }  from "../../utils"
 
 
 const { SubMenu,Item } = Menu;
@@ -23,10 +24,32 @@ class LeftNav extends Component {
               </Link>
             </Item>
   }
-    //初始画的时候就要渲染 而且只生成一次 动态生成左边菜单 更新的时候不渲染
+
+//初始画的时候就要渲染 而且只生成一次 动态生成左边菜单 更新的时候不渲染
   componentWillMount(){
     //只要没选中其他的组件的时候 默认选中home
     let ishome = true;
+    //通过每个用户设置得不同权限组件 重而来分配不同得界面
+    let { role :{menus} ,username} = getinformation()
+
+    if (username === 'admin') {
+      // 就是admin
+      menus = [
+        '/home',
+        '/products',
+        '/category',
+        '/product',
+        '/user',
+        '/role',
+        '/charts',
+        '/charts/line',
+        '/charts/bar',
+        '/charts/pie',
+      ]
+    }
+
+    console.log(menus);
+
 
     // 获取location 上的pathname 属性的值就是路由路径
     // 可以获取loction上内容 来进行判断是否跟二级菜单同名 此时就展开二级菜单的父元素一级菜单
@@ -38,35 +61,52 @@ class LeftNav extends Component {
       pathname = pathname.slice(0,8)
     }
 
-
-     this.menus = menuList.map((menu)=>{  //使用map是因为内容改变 长度不变
-            if(menu.children){
-                //二级菜单
-                return <SubMenu
-                    key={menu.key}
-                    title={
-                        <span>
-                            <Icon type={menu.icon}/>
-                            <span>{menu.title}</span>
-                        </span>
-                    }
-                >
-                    {
-                      menu.children.map((item) => {
-                        if(pathname === item.key){ //当和二级菜单的值一样的时候 就展开他的父元素
-                          //初始化展开菜单
-                          this.openKey = menu.key
-                          ishome = false     //不能选中其他组件
-                        }
-                         return this.creatMenu(item)
-                      })
-                    }
-                </SubMenu>
-            }else {
-              if(menu.key === pathname) ishome = false //不能选中其他组件
-                return this.creatMenu(menu)
+    this.menus = menuList.reduce((prev,curr) =>{
+      const  children = curr.children
+      let isshowmenus = false
+      if( children ){
+        //生成二级菜单
+        const subMenu = <SubMenu
+            key={curr.key}
+            title={
+              <span>
+              <Icon type={curr.icon} />
+              <span>{curr.title}</span>
+            </span>
             }
-        })
+        >
+          {
+            children.reduce((prev, current) => {
+              const menu = menus.find((menu) => menu === current.key);
+              if (menu) {
+                isshowmenus = true
+                //当匹配到了二级菜单得时候则展开一级菜单
+                if(current.key===pathname){
+                  this.openKey = curr.key
+                }
+                return [...prev, this.creatMenu(current)]
+              } else {
+                return prev
+              }
+            }, [])
+          }
+            </SubMenu>;
+
+         //当有二级菜单得时候才会显示一级菜单如果没有就不显示
+          return isshowmenus ? [...prev,subMenu]:prev
+      }else {
+        //生成一级菜单
+        const menu = menus.find((menu) =>  menu === curr.key)
+        if(menu){
+          //返回一个新得数组
+          return [...prev,this.creatMenu(curr)]
+        }else{
+           return  prev
+        }
+      }
+    },[])
+
+
     //初始化选中菜单
     this.SelectedKeys = ishome ? "/home":pathname;
   }
@@ -86,67 +126,6 @@ class LeftNav extends Component {
           {
             this.menus
           }
-            {/*<Item key="home">*/}
-            {/*    <Link to="/home">*/}
-            {/*        <Icon type="home" />*/}
-            {/*        <span>首页</span>*/}
-            {/*    </Link>*/}
-            {/*</Item>*/}
-            {/*<SubMenu  key="sub1"*/}
-            {/*   title={*/}
-            {/*    <span>*/}
-            {/*      <Icon type="appstore" />*/}
-            {/*      <span>商品</span>*/}
-            {/*    </span>*/}
-            {/*      }*/}
-            {/*>*/}
-            {/*    <Item key="category">*/}
-            {/*        <Link to="/category">*/}
-            {/*            <Icon type="bars" />*/}
-            {/*            <span>品类管理</span>*/}
-            {/*        </Link>*/}
-            {/*    </Item>*/}
-            {/*    <Item key="tool">*/}
-            {/*        <Link to="/tool">*/}
-            {/*            <Icon type="tool" />*/}
-            {/*            <span>商品管理</span>*/}
-            {/*        </Link>*/}
-            {/*    </Item>*/}
-            {/*</SubMenu>*/}
-            {/*<Item key="user">*/}
-            {/*    <Link to="/user">*/}
-            {/*        <Icon type="user" />*/}
-            {/*        <span>用户管理</span>*/}
-            {/*    </Link>*/}
-            {/*</Item>*/}
-            {/*<Item key="role">*/}
-            {/*    <Link to="/role">*/}
-            {/*        <Icon type="safety" />*/}
-            {/*        <span>权限管理</span>*/}
-            {/*    </Link>*/}
-            {/*</Item>*/}
-            {/*<SubMenu*/}
-            {/*    key="sub2"*/}
-            {/*    title={*/}
-            {/*        <span>*/}
-            {/*      <Icon type="area-chart" />*/}
-            {/*      <span>图形图标</span>*/}
-            {/*    </span>*/}
-            {/*    }*/}
-            {/*>*/}
-            {/*    <Item key="bar-chart">*/}
-            {/*        <Icon type="bar-chart" />*/}
-            {/*        <span>柱形图</span>*/}
-            {/*    </Item>*/}
-            {/*    <Item key="line-chart">*/}
-            {/*        <Icon type="line-chart" />*/}
-            {/*        <span>折线图</span>*/}
-            {/*    </Item>*/}
-            {/*    <Item key="pie-chart">*/}
-            {/*        <Icon type="pie-chart" />*/}
-            {/*        <span>饼图</span>*/}
-            {/*    </Item>*/}
-            {/*</SubMenu>*/}
         </Menu>
     </div>;
   }

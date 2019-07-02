@@ -20,6 +20,7 @@ class Login extends Component {
                 console.log(username,password)
 
                 const  result =await reqLogin(username,password)
+                console.log(result)
                 if(result){
                     //登录成功
                    //再回调函数中 使用编程式导航 再render中使用重定向

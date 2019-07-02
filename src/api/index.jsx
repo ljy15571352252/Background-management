@@ -65,3 +65,33 @@ export const  addProducts= function({name, desc, price, categoryId, pCategoryId,
   return ajax("/manage/product/add",{name, desc, price, categoryId, pCategoryId, detail},"POST")
 }
 
+//更新修改产品的接口
+export const  updataProductsName= function({name, desc, price, categoryId, pCategoryId, detail,_id}) {
+  return ajax("/manage/product/update",{name, desc, price, categoryId, pCategoryId, detail,_id},"POST")
+}
+
+//删除图片
+export const removeImg = (name,id) => ajax("/manage/img/delete",{name,id},"POST")
+
+//搜索用户信息
+export const reqProductsmessage = ({searchType,searchContent,pageNum,pageSize}) => ajax("/manage/product/search",{[searchType]:searchContent,pageNum,pageSize})
+
+//更新上下架
+export const reqUpdateProductStatus = (productId, status) => ajax("/manage/product/updateStatus",{productId, status},"POST")
+
+//获取角色信息
+export const Acquirerole = () => ajax("/manage/role/list")
+//添加角色
+export const reqAddRole = (name) => ajax("/manage/role/add",{name},"POST")
+
+//设置角色权限
+export const reqUpdateRole = (_id,auth_name,menus) => ajax("/manage/role/update",{_id,auth_name,menus},"POST")
+
+//获取用户信息
+export const reqUserlist = () => ajax("/manage/user/list")
+
+//添加用户
+export const reqAddUser = ({username, password, phone, email, role_id}) => ajax("/manage/user/add",{username, password, phone, email, role_id},"POST")
+
+
+
