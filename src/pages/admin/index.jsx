@@ -63,7 +63,7 @@ export default class Admin extends Component {
           
          return  this.setState({
             isLogin:false,
-            success:menus
+            success:menus.reverse()
           })
         }
       }
@@ -83,7 +83,6 @@ export default class Admin extends Component {
                 <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
                   <LeftNav collapsed={collapsed}/>
                 </Sider>
-
                 <Layout>
                   <Header style={{ background: '#fff', padding: 0, minHeight: 100 }}>
                     <HeaderMain/>
